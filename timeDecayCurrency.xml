@@ -1,0 +1,103 @@
+<smartContract
+ version="2.0"
+ serverID="y0ca6JVtYSZuj1etoABAsaNJsU2Kb35AjeQZyZ0YCCF"
+ activatorUserID=""
+ activatorAcctID=""
+ lastSenderUserID=""
+ lastSenderAcctID=""
+ lastRecipientUserID=""
+ lastRecipientAcctID=""
+ canceled="false"
+ cancelerUserID=""
+ transactionNum="0"
+ creationDate="1423959823"
+ validFrom="1423959823"
+ validTo="0"
+ nextProcessDate="0" >
+
+<scriptableContract
+ specifyAssetID="false"
+ specifyParties="false"
+ numParties="2"
+ numBylaws="1" >
+
+<party
+ name="Issuer_Party"
+ ownerType="nym"
+ ownerID=""
+ openingTransNo="540"
+ signedCopyProvided="true"
+ authorizingAgent="Issuer_Agent"
+ numAgents="1"
+ numAccounts="1" >
+
+<agent
+ name="Issuer_Agent"
+ doesAgentRepresentHimself="true"
+ isAgentAnIndividual="true"
+ nymID=""
+ roleID=""
+ groupName="" />
+
+<assetAccount
+ name="Initial_Deposit_Account"
+ acctID=""
+ assetTypeID="dky86RGUPSAhdjcf6AyDtNtiFLvzfMdMa83b53WLXbI"
+ agentName="Issuer_Agent"
+ closingTransNo="539" />
+
+</party>
+
+<party
+ name="Receiver_Party"
+ ownerType="nym"
+ ownerID=""
+ openingTransNo="1361"
+ signedCopyProvided="true"
+ authorizingAgent="Receiver_Agent"
+ numAgents="1"
+ numAccounts="1" >
+
+<agent
+ name="Receiver_Agent"
+ doesAgentRepresentHimself="true"
+ isAgentAnIndividual="true"
+ nymID=""
+ roleID=""
+ groupName="" />
+
+<assetAccount
+ name="Receiver_Account"
+ acctID=""
+ assetTypeID="dky86RGUPSAhdjcf6AyDtNtiFLvzfMdMa83b53WLXbI"
+ agentName="Receiver_Agent"
+ closingTransNo="1360" />
+
+</party>
+
+<bylaw
+ name="Main_Bylaw"
+ numVariables="0"
+ numClauses="1"
+ numHooks="1"
+ numCallbacks="0"
+ language="chai" >
+
+<clause
+ name="Main_Clause">
+eNrjkihLLFIoSS0uCUssykxMyklVsFUoKSpNtQYAdQQI6g==
+</clause>
+
+<hook
+ name="cron_activate"
+ clause="Main_Clause" />
+
+</bylaw>
+
+</scriptableContract>
+
+<accountList type="stash" count="0" >
+
+</accountList>
+
+</smartContract>
