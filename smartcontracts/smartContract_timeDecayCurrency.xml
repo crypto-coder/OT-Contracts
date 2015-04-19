@@ -1,0 +1,188 @@
+<smartContract
+version="2.0"
+serverID="y0ca6JVtYSZuj1etoABAsaNJsU2Kb35AjeQZyZ0YCCF"
+activatorUserID=""
+activatorAcctID=""
+lastSenderUserID=""
+lastSenderAcctID=""
+lastRecipientUserID=""
+lastRecipientAcctID=""
+canceled="false"
+cancelerUserID=""
+transactionNum="0"
+creationDate="1423959823"
+validFrom="1423959823"
+validTo="0"
+nextProcessDate="0" >
+
+<scriptableContract
+specifyAssetID="false"
+specifyParties="false"
+numParties="2"
+numBylaws="1" >
+
+<party
+name="Issuer_Party"
+ownerType="nym"
+ownerID=""
+openingTransNo="540"
+signedCopyProvided="true"
+authorizingAgent="Issuer_Agent"
+numAgents="1"
+numAccounts="1" >
+
+<agent
+name="Issuer_Agent"
+doesAgentRepresentHimself="true"
+isAgentAnIndividual="true"
+nymID=""
+roleID=""
+groupName="" />
+
+<assetAccount
+name="Initial_Deposit_Account"
+acctID=""
+assetTypeID="dky86RGUPSAhdjcf6AyDtNtiFLvzfMdMa83b53WLXbI"
+agentName="Issuer_Agent"
+closingTransNo="539" />
+
+
+</party>
+
+<party
+name="Receiver_Party"
+ownerType="nym"
+ownerID=""
+openingTransNo="1361"
+signedCopyProvided="true"
+authorizingAgent="Receiver_Agent"
+numAgents="1"
+numAccounts="1" >
+
+<agent
+name="Receiver_Agent"
+doesAgentRepresentHimself="true"
+isAgentAnIndividual="true"
+nymID=""
+roleID=""
+groupName="" />
+
+<assetAccount
+name="Receiver_Account"
+acctID=""
+assetTypeID="dky86RGUPSAhdjcf6AyDtNtiFLvzfMdMa83b53WLXbI"
+agentName="Receiver_Agent"
+closingTransNo="1360" />
+
+<assetAccount
+name="Pending_Transfer_Account"
+acctID=""
+assetTypeID="dky86RGUPSAhdjcf6AyDtNtiFLvzfMdMa83b53WLXbI"
+agentName="Receiver_Agent"
+closingTransNo="1359" />
+
+</party>
+
+<bylaw
+name="Main_Bylaw"
+numVariables="5"
+numClauses="2"
+numHooks="2"
+numCallbacks="0"
+language="chai" >
+
+  
+<variable
+name="Initial_Balance"
+type="string"
+access="important"
+value="" />
+
+<variable
+name="Decay_Function"
+type="string"
+access="important"
+value="linear" />
+
+<variable
+name="New_Receiver_Nym_ID"
+type="string"
+access="important"
+value="" />
+
+<variable
+name="Transfer_Amount"
+type="string"
+access="important"
+value="" />
+
+<variable
+name="Pending_Transfer"
+type="bool"
+access="important"
+value="false" />
+
+
+  
+  
+<clause
+name="Activation_Clause">
+  print("SMART CONTRACT: OnActivate(), FYI, is happening/happened, as of this log. (from cron_activate hook)");
+  
+  try{
+    //var initialBalanceIsNumber = 
+    //if(!initialBalanceIsNumber){
+    //  print(" The Initial_Balance for this Time Decay SmartContract is not valid. Initial_Balance = " + currentInitialBalance);
+    //  deactivate_contract();
+    //}
+      
+    //Check the Initial_Deposit_Account for available funds
+    var currentInitialBalance = Initial_Balance;
+    var availableDepositBalance = get_acct_balance("Initial_Deposit_Account");
+    print("Initial_Deposit_Account balance = " + availableDepositBalance);
+    
+    var fundsAreAvailable = (to_string(min(availableDepositBalance, Initial_Balance)) == Initial_Balance);
+    if(!fundsAreAvailable){
+      print(" The Initial_Deposit_Account does not contain enough funds to cover the initial balance transfer. Initial_Balance = " + currentInitialBalance);
+      deactivate_contract();
+      return;
+    }
+    
+    
+    //Stash the funds from the Initial_Deposit_Account into the Receiver_Stash_Account
+  }catch(e){
+    deactivate_contract();
+    print("Error during Activation Clause");
+    return;
+  }
+  
+  
+    deactivate_contract();
+  //set_seconds_until_timer("60"); 
+    
+</clause>
+
+<clause
+name="Update_Balance_Clause">
+  print("SMART CONTRACT: OnProcess(), FYI, is happening/happened, as of this log. (from cron_process hook)");
+  
+</clause>
+
+
+
+<hook
+name="cron_activate"
+clause="Activation_Clause" />
+<hook
+name="cron_process"
+clause="Update_Balance_Clause" />
+
+</bylaw>
+
+</scriptableContract>
+
+<accountList type="stash" count="0" >
+
+</accountList>
+
+</smartContract>

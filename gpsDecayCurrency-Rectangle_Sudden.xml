@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<digitalAssetContract version="2.1">
+
+    <entity shortname="PUREMoneySystems.com"
+            longname="PUREMoneySystems.com"
+            email="puremoneysystems@gmail.com"
+            serverURL="https://localhost/vers/1/"/>
+
+    <issue company="PUREMoneySystems.com"
+           email="puremoneysystems@gmail.com"
+           contractUrl="https://localhost/contracts/"
+           type="currency"/>
+
+    <currency name="" tla="" symbol="." type="decimal" factor="1" decimal_power="0" fraction=""/>
+
+    <!-- CONDITIONS -->
+
+    <condition name="backing">
+        No implicit or explicit backing for this currency
+    </condition>
+
+    <condition name="audit">
+        No audits performed on this currency's use or distribution
+    </condition>
+
+    <condition name="purchase">
+        This currency is given to others as gifts.  No initial purchase is required to recieve this currency.
+    </condition>
+
+    <condition name="redemption">
+        PUREMoneySystems.com, nor anyone else using the LastFlag system, will redeem this currency for another asset.  This is a test only.
+    </condition>
+
+    <condition name="rate">
+        Issuance and redemption of this currency will be performed at no charge
+    </condition>
+
+    <condition name="buyback">
+        PUREMoneySystems provides no backing or buyback option for this currency. 
+    </condition>
+
+    <condition name="liability">
+        PUREMoneySystems will provide no liability for the use, distribution, or transmission of this currency.  This is a test and is not intended to represent or perform like a real-world currency
+    </condition>
+
+    <condition name="mint">
+        PUREMoneySystems serves as the mint for this currency, when directed to issue or withdraw some currency to an account by the Issuer
+    </condition>
+
+    <condition name="privacy">
+        PUREMoneySystems uses Open Transactions to manage all transactions with this currency.  Open Transactions does not record transactions, but the LastFlag application does.  Security at multiple layers is considered, but this should not be relied on.  As a test, assume all data is public, all the time.
+    </condition>
+
+
+    <scriptableContract numBylaws="1" >
+      <bylaw name="Main_Bylaw" numVariables="7" numClauses="1" numHooks="0" numCallbacks="0" language="chai" >
+		
+	<variable name="Coordinate1_X" type="string" access="constant" value="" />
+	<variable name="Coordinate1_Y" type="string" access="constant" value="" />
+	<variable name="Coordinate2_X" type="string" access="constant" value="" />
+	<variable name="Coordinate2_Y" type="string" access="constant" value="" />
+		
+	<variable name="Current_Balance" type="string" access="persistent" value="" />
+	<variable name="Current_Latitude" type="string" access="persistent" value="" />	
+	<variable name="Current_Longitude" type="string" access="persistent" value="" />
+	
+	<variable name="Computed_Balance" type="string" access="persistent" value="" />
+	
+	
+	
+	<clause name="Get_Computed_Balance">
+	  print("ASSET CONTRACT: Get_Computed_Balance(), FYI, is happening, as of this log. ");
+	  	  
+	  //Distance on a sphere calculated using Haversine formula
+	  //http://rosettacode.org/wiki/Haversine_formula
+	  //EQUATION
+	  // radians = (angle * Pi) / 180
+	  // haversineArc = (sin(radians(x2-x1)/2))^2 + (sin(radians(y2-y1)/2))^2 * cos(radians(x1)) * cos(radians(x2))
+	  // distance = earthRadius * 2 * asin(sqrt(haversineArc))
+		   	  
+	  var earthRadius = 6372.800; // In kilometers
+	  var radiusKilometers = ((Radius_Meters.to_double()) / 1000);
+	  var pi = get_pi();
+	  
+	  try{ 	    
+	    var centerLatitude_double = Center_Latitude.to_double();
+	    var centerLongitude_double = Center_Longitude.to_double();
+	    var currentLatitude_double = Current_Latitude.to_double();
+	    var currentLongitude_double = Current_Longitude.to_double();
+	  	  
+	    var xHaversine = sin((pi * (currentLatitude_double - centerLatitude_double)) / 180);
+	    var yHaversine = sin((pi * (currentLongitude_double - centerLongitude_double)) / 180);
+	    var centerLatitudeCosine = cos((pi * centerLatitude_double) / 180);
+	    var currentLatitudeCosine = cos((pi * currentLatitude_double) / 180);
+	    
+	    var haversineArc = (xHaversine * xHaversine) + (yHaversine * yHaversine) * centerLatitudeCosine * currentLatitudeCosine;
+	    var distance = earthRadius * 2 * asin(sqrt(haversineArc));
+	    	    
+	    
+	    //Compute the remaining balance
+	    if(distance > radiusKilometers){	  
+	      print("This currency has no value outside its GPS range.");     
+	      Computed_Balance = "0";
+	      return;
+	    }else{
+	      Computed_Balance = Current_Balance;
+	    }
+	    	    
+	  }catch(e){
+	    print("Error during Get_Computed_Balance clause: ${e}");
+	    Computed_Balance = "0";
+	  }
+	  
+	  return;
+	  
+	</clause>
+
+      </bylaw>
+    </scriptableContract>
+
+</digitalAssetContract>
