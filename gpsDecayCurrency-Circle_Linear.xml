@@ -53,7 +53,7 @@
 
 
     <scriptableContract numBylaws="1" >
-      <bylaw name="Main_Bylaw" numVariables="7" numClauses="1" numHooks="0" numCallbacks="0" language="chai" >
+      <bylaw name="GPS_Circle_Decay_Bylaw" numVariables="7" numClauses="1" numHooks="0" numCallbacks="0" language="chai" >
 		
 	<variable name="Center_Latitude" type="string" access="constant" value="" />
 	<variable name="Center_Longitude" type="string" access="constant" value="" />
